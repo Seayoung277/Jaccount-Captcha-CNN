@@ -1,0 +1,133 @@
+<html>
+<head>
+<title>Model Trainer</title>
+ 
+<style>
+body {
+  background-color: #FFF; /* example... */
+}
+</style>
+
+<script src="convnet.js"></script>
+<script src="trainData.js"></script>
+<script src="testData.js"></script>
+<script src="trainLabel.js"></script>
+<script src="testLabel.js"></script>
+<script type="text/javascript">
+
+var net;
+var trainer;
+var accuracy;
+var goal;
+
+function copy() {
+  var text = document.getElementById("model");
+  text.select();
+  document.execCommand("Copy");
+  alert("Network Data Ready In Clipboard !");
+}
+
+function show(msg) {
+  var d = document.getElementById('model');
+  d.innerHTML = msg;
+}
+ 
+function train() {
+
+  do {
+    var tacc = document.getElementById("tacc");
+    goal = tacc.value;
+    accuracy = 0;
+
+    // Net Preparation
+    console.log('Preparing Network ...');
+    var layers = [];
+    layers.push({type:'input', out_sx:20, out_sy:40, out_depth:1});
+    layers.push({type:'conv', sx:5, filters:10, stride:1, pad:2, activation:'relu'});
+    layers.push({type:'pool', sx:2, stride:2});
+    layers.push({type:'conv', sx:5, filters:20, stride:1, pad:2, activation:'relu'});
+    layers.push({type:'pool', sx:2, stride:2});
+    //layers.push({type:'fc', num_neurons:120, activation:'relu'});
+    layers.push({type:'fc', num_neurons:100, activation:'relu'});
+    layers.push({type:'softmax', num_classes:26});
+    net = new convnetjs.Net();
+    net.makeLayers(layers);
+
+    // Trainer Preparation
+    trainer = new convnetjs.Trainer(net, {method: 'adadelta', l2_decay: 0.001, batch_size: 1});
+    console.log('Network Ready !');
+    console.log('Training ...');
+
+    // Net Training
+    var image;
+    var label;
+    var probe;
+    var score;
+    var index;
+    var count;
+
+    for(var l=0; l<10; l++){
+      for(var i=0; i<10000; i++){
+        //console.log('Image ' + i + ' Training ...');
+        image = new convnetjs.Vol(40, 20, 1);
+        image.w = train_data[i];
+        label = train_label[i] - 1;
+        trainer.train(image, label);
+      }
+      count = 0;
+      for(var i=0; i<2000; i++){
+        //console.log('Image ' + i + ' Testing ...');
+        image = new convnetjs.Vol(40, 20, 1);
+        image.w = test_data[i];
+        label = test_label[i] - 1;
+        probe = net.forward(image);
+        score = 0;
+        index = 0;
+        for(var j=0; j<26; j++){
+          if(probe.w[j]>score){
+            score = probe.w[j];
+            index = j;
+          }
+        }
+        if(index==label){count ++;}
+      }
+      accuracy = count / 2000;
+      console.log('Accuracy: ' + accuracy);
+      if(accuracy>=goal) {
+        break;
+      }
+    }
+    if(accuracy>=goal) {
+      console.log('Nailed !'); 
+      break;
+    }
+    else{
+      console.log('Network Failed, Restarting ...');
+    }
+  } while(accuracy<1)
+  
+  //Show Model
+  console.log('Generating Network Data ...');
+  var json = net.toJSON();
+  var str = JSON.stringify(json);
+  console.log('All Finished !');
+  show('var json = ' + str);
+}
+ 
+</script>
+</head>
+ 
+<body>
+<div><textarea rows="30" cols="100" id="model">The Network Data Will Be Shown Here ...
+Use Ctrl+Shift+i To Open The Browser Console</textarea></div>
+<div>
+<form>
+Target Accuracy:
+<input type="text" id="tacc" name="accuracy" value="0.99">
+</form> 
+<button type="button" onclick="train()">Start Training</button>
+<button type="button" onclick="copy()">Copy Data</button>
+
+</div>
+</body>
+</html>
