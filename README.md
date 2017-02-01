@@ -3,7 +3,7 @@
 ## Description
 This is a CNN version of Jaccount captcha recognizing project. There are two folders and several files:
 
-- `/torch` uses [Torch](torch.th) to test and optimize the CNN. It's something like a prototype.
+- `/torch` uses [Torch](http://torch.ch) to test and optimize the CNN. It's something like a prototype.
 - `/plugin` includes the Chrome/Chromium plugin source code and the packed plugin file `JaccountCaptcha.crx`.
 - `convet.js` is Andrej Karpathy's [ConvNetJS](http://cs.stanford.edu/people/karpathy/convnetjs/index.html) source file. The GitHub repository of this brillant project is [Here](https://github.com/karpathy/convnetjs)
 - `trainer.html` is the model training page. It is recommended to open it in Chrome/Chromium. It's really easy to use.
