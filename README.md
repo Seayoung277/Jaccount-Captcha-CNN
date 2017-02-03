@@ -7,7 +7,7 @@ This is a CNN version of Jaccount captcha recognizing project. There are two fol
 - `/plugin` includes the Chrome/Chromium plugin source code and the packed plugin file `JaccountCaptcha.crx`.
 - `convet.js` is Andrej Karpathy's [ConvNetJS](http://cs.stanford.edu/people/karpathy/convnetjs/index.html) source file. The GitHub repository of this brillant project is [Here](https://github.com/karpathy/convnetjs)
 - `trainer.html` is the model training page. It is recommended to open it in Chrome/Chromium. It's really easy to use.
-- `savejs` is used for transforming `.h5` data files to `.txt` data files, and `js.py` is used for transforming `.txt` data file to `.js` data file. Sorry for making this so complicated ... XD.
+- `savejs.m` is used for transforming `.h5` data files to `.txt` data files, and `js.py` is used for transforming `.txt` data file to `.js` data file. Sorry for making this so complicated ... XD.
 
 ## Guide
 1. If you want to use the Torch prototype, you can refer to the guide in `/torch`.
