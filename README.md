@@ -16,7 +16,7 @@ This is a CNN version of Jaccount captcha recognizing project. There are two fol
 
  - Open the `trainer.html` page in Chrome/Chromium, enter the target accuracy and click `Start Training`. Training messages will be shown in the browser console, you can use `Ctrl+Shift+i` to open it. 
  - When all Finished, the model data will be shown in the textarea, and click `Copy Data` to copy the data to clipboard, and paste it to a text file named `model_1.js`.
- - Copy this file to the `/plugin` folder and repoad the plugin. Now you have your new model in place.
+ - Copy this file to the `/plugin` folder and reload the plugin. Now you have your new model in place.
 
 ## Data Set
 The dataset used in this project is collected and labeled by myself in an [earlier project](https://github.com/seayoungzhang/jaccount-captcha-nn). The docs and codes there is a little bit chaos ... XD
